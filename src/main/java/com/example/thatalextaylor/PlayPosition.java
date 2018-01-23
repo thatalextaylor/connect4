@@ -17,4 +17,8 @@ public class PlayPosition {
     public int getY() {
         return y;
     }
+
+    public PlayPosition offset(Direction direction) {
+        return new PlayPosition(this.x + direction.getDeltaX(), this.y + direction.getDeltaY());
+    }
 }

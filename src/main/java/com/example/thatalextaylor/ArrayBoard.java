@@ -2,7 +2,8 @@ package com.example.thatalextaylor;
 
 import java.util.Arrays;
 
-public class ArrayBoard implements Connect4Board {
+public final class ArrayBoard implements Connect4Board {
+    private final static int WIN_LENGTH = 4;
     private final int width;
     private final int height;
     private final Team[] board;
@@ -18,7 +19,7 @@ public class ArrayBoard implements Connect4Board {
         Arrays.fill(board, Team.None);
     }
 
-    public PlayPosition play(Team team, int column) {
+    public PlayPosition makePlay(Team team, int column) {
         PlayPosition move = getFreePosition(column);
         if (move != PlayPosition.FULL_COLUMN) {
             setMove(team, move);
@@ -26,7 +27,18 @@ public class ArrayBoard implements Connect4Board {
         return move;
     }
 
-    public PlayPosition getFreePosition(int column) {
+    public boolean isWinningMove(PlayPosition atPosition) {
+        int lowX = atPosition.getX() - WIN_LENGTH + 1;
+        int lowY = atPosition.getY() - WIN_LENGTH + 1;
+        int highY = atPosition.getX() + WIN_LENGTH - 1;
+        return
+                checkWin(new PlayPosition(atPosition.getX(), lowY), Direction.Up) != Team.None ||
+                checkWin(new PlayPosition(lowX, lowY), Direction.UpRight) != Team.None ||
+                checkWin(new PlayPosition(lowX, atPosition.getY()), Direction.Right) != Team.None ||
+                checkWin(new PlayPosition(lowX, highY), Direction.DownRight) != Team.None;
+    }
+
+    private PlayPosition getFreePosition(int column) {
         for (int y = 0; y < height; y++) {
             PlayPosition candidate = new PlayPosition(column, y);
             if (isFreePosition(candidate)) {
@@ -51,12 +63,37 @@ public class ArrayBoard implements Connect4Board {
     }
 
     private void checkBounds(PlayPosition position) {
-        if ((position == PlayPosition.FULL_COLUMN) ||
-                (position == null) ||
-                (position.getX() < 0) ||
-                (position.getY() < 0) ||
-                (position.getX() >= width) ||
-                (position.getY() >= height))
+        if (!isInBounds(position))
             throw new InvalidPlayPosition(String.format("PlayPosition(%d, %d) is outside the play area", position.getX(), position.getY()));
+    }
+
+    private boolean isInBounds(PlayPosition position) {
+        return (position != PlayPosition.FULL_COLUMN) &&
+                (position != null) &&
+                (position.getX() >= 0) &&
+                (position.getY() >= 0) &&
+                (position.getX() < width) &&
+                (position.getY() < height);
+    }
+
+    private Team checkWin(PlayPosition position, Direction direction) {
+        Team team = Team.None;
+        int runLength = 0;
+        for (int i = 0; i < WIN_LENGTH * 2 - 2; i++) {
+            if (isInBounds(position)) {
+                Team candidateTeam = getMove(position);
+                if (candidateTeam == team) {
+                    runLength++;
+                    if (runLength == WIN_LENGTH) {
+                        return team;
+                    }
+                } else {
+                    team = candidateTeam;
+                    runLength = 1;
+                }
+            }
+            position = position.offset(direction);
+        }
+        return Team.None;
     }
 }
