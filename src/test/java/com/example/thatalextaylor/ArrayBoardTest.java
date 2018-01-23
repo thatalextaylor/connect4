@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class ArrayBoardTest {
     @Test(expected = IllegalArgumentException.class)
@@ -51,5 +51,50 @@ public class ArrayBoardTest {
         board.makePlay(Team.Green, 0);
         board.makePlay(Team.Green, 0);
         assertThat(board.isWinningMove(new PlayPosition(0, 3)), equalTo(true));
+    }
+
+    @Test
+    public void shouldFindComplicatedWinCondition() {
+        ArrayBoard board = new ArrayBoard(7, 7);
+        fillBoard(board,
+                "R.....R",
+                "GR...RG",
+                "GGR.RGG",
+                "RRR.RRR",
+                "GGRRRGG",
+                "GRGRGRG",
+                "RGGRGGR");
+        assertThat(board.isWinningMove(new PlayPosition(3, 3)), equalTo(false));
+        board.makePlay(Team.Red, 3);
+        assertThat(board.isWinningMove(new PlayPosition(3, 3)), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotMatchNearWinCondition() {
+        ArrayBoard board = new ArrayBoard(7, 7);
+        fillBoard(board,
+                "R.....R",
+                "GR...RG",
+                "GGG.GGG",
+                "RRG.GRR",
+                "GGRGGRG",
+                "GGGRGRG",
+                "RGGRGGR");
+        board.makePlay(Team.Red, 3);
+        assertThat(board.isWinningMove(new PlayPosition(3, 3)), equalTo(false));
+    }
+
+    private void fillBoard(ArrayBoard board, String... fill) {
+        for (int y = fill.length - 1; y >=0; y--) {
+            for (int x = 0; x < fill[0].length(); x++) {
+                Team team = Team.None;
+                if (fill[y].charAt(x) == 'R') {
+                    team = Team.Red;
+                } else if (fill[y].charAt(x) == 'G') {
+                    team = Team.Green;
+                }
+                board.makePlay(team, x);
+            }
+        }
     }
 }
