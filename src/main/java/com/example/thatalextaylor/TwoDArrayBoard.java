@@ -93,7 +93,6 @@ public final class TwoDArrayBoard implements Connect4Board {
     }
 
     //Can a piece be placed in this position?
-    //Could be inlined, but it adds legibility
     private boolean isFreePosition(PlayPosition position) {
         return getMove(position) == Team.None;
     }
