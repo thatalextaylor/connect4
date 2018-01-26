@@ -18,3 +18,4 @@ Assumptions
 - It is written to show maintainable, extensible code rather than how I would implement it for a one-off or well-scoped project. So it has:
 -- Interfaces with only one implementation
 -- Methods that could be inlined, but exist for legibility
+- The Java language level was kept low deliberately, avoiding lambdas, newer APIs etc.
