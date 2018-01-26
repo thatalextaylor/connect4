@@ -15,6 +15,6 @@ Assumptions
 - With no mention of what to do after a round, the program exits after a win
 - The code requires no external libraries to run, but JUnit is required for tests
 - It is written to show maintainable, extensible code rather than how I would implement it for a one-off or well-scoped project. So it has:
--- Interfaces with only one implementation
--- Methods that could be inlined, but exist for legibility
+  - Interfaces with only one implementation
+  - Methods that could be inlined, but exist for legibility
 - The Java language level was kept low deliberately, avoiding lambdas, newer APIs etc.
