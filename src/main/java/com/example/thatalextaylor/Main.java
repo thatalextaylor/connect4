@@ -3,7 +3,6 @@ package com.example.thatalextaylor;
 public class Main {
     public static void main(String[] args) {
         boolean useAnsiPresenter = false;
-        boolean use1DBoard = false;
         int width = 7;
         int height = 6;
 
@@ -11,11 +10,12 @@ public class Main {
             arg = arg.toLowerCase();
             if (arg.equals("--ansi")) {
                 useAnsiPresenter = true;
-            } else if (arg.equals("--1d")) {
-                use1DBoard = true;
             } else if (arg.equals("--big")) {
                 width = 15;
                 height = 12;
+            } else if (arg.equals("--tiny")) {
+                width = 5;
+                height = 5;
             } else {
                 throw new IllegalArgumentException(
                         String.format("Argument '%s' was not recognized", arg));
@@ -23,8 +23,7 @@ public class Main {
         }
 
         GamePresenter presenter = useAnsiPresenter ? new AnsiPresenter() : new CommandLinePresenter();
-        Connect4Board board = use1DBoard ? new SingleArrayBoard(width, height) : new TwoDArrayBoard(width, height);
-        GameController controller = new GameController(new Game(board), presenter);
+        GameController controller = new GameController(new Game(new TwoDArrayBoard(width, height)), presenter);
         controller.run();
     }
 }

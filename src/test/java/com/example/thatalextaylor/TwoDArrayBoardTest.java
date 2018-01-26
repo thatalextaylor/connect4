@@ -8,15 +8,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class SingleArrayBoardTest {
+public class TwoDArrayBoardTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldNotAllowNegativeOrZeroDimensions() {
-        new SingleArrayBoard(-1, 0);
+        new TwoDArrayBoard(-1, 0);
     }
 
     @Test
     public void shouldPlaceMove() {
-        SingleArrayBoard board = new SingleArrayBoard(2, 2);
+        Connect4Board board = new TwoDArrayBoard(2, 2);
         PlayPosition firstPlay = board.makePlay(Team.Green, 0);
         assertThat(firstPlay.getX(), equalTo(0));
         assertThat(firstPlay.getY(), equalTo(0));
@@ -27,7 +27,7 @@ public class SingleArrayBoardTest {
 
     @Test
     public void shouldFillColumn() {
-        SingleArrayBoard board = new SingleArrayBoard(1, 1);
+        Connect4Board board = new TwoDArrayBoard(1, 1);
         PlayPosition firstPlay = board.makePlay(Team.Green, 0);
         assertThat(firstPlay.getX(), equalTo(0));
         assertThat(firstPlay.getY(), equalTo(0));
@@ -37,7 +37,7 @@ public class SingleArrayBoardTest {
 
     @Test
     public void shouldFindHorizontalWin() {
-        SingleArrayBoard board = new SingleArrayBoard(4, 1);
+        Connect4Board board = new TwoDArrayBoard(4, 1);
         board.makePlay(Team.Green, 0);
         board.makePlay(Team.Green, 1);
         board.makePlay(Team.Green, 2);
@@ -47,7 +47,7 @@ public class SingleArrayBoardTest {
 
     @Test
     public void shouldFindVerticalWin() {
-        SingleArrayBoard board = new SingleArrayBoard(1, 4);
+        Connect4Board board = new TwoDArrayBoard(1, 4);
         board.makePlay(Team.Green, 0);
         board.makePlay(Team.Green, 0);
         board.makePlay(Team.Green, 0);
@@ -57,7 +57,7 @@ public class SingleArrayBoardTest {
 
     @Test
     public void shouldFindComplicatedWinCondition() {
-        SingleArrayBoard board = new SingleArrayBoard(7, 7);
+        Connect4Board board = new TwoDArrayBoard(7, 7);
         fillBoard(board,
                 "R.....R",
                 "GR...RG",
@@ -73,7 +73,7 @@ public class SingleArrayBoardTest {
 
     @Test
     public void shouldNotMatchNearWinCondition() {
-        SingleArrayBoard board = new SingleArrayBoard(7, 7);
+        Connect4Board board = new TwoDArrayBoard(7, 7);
         fillBoard(board,
                 "R.....R",
                 "GR...RG",
@@ -88,7 +88,7 @@ public class SingleArrayBoardTest {
 
     @Test
     public void shouldWinAtCorrectTime() {
-        SingleArrayBoard board = new SingleArrayBoard(7, 7);
+        Connect4Board board = new TwoDArrayBoard(7, 7);
         assertThat(board.isWinningMove(board.makePlay(Team.Red, 0)), equalTo(false));
         assertThat(board.isWinningMove(board.makePlay(Team.Green, 1)), equalTo(false));
         assertThat(board.isWinningMove(board.makePlay(Team.Red, 0)), equalTo(false));
@@ -100,7 +100,7 @@ public class SingleArrayBoardTest {
 
     @Test
     public void shouldCheckColumnBounds() {
-        SingleArrayBoard board = new SingleArrayBoard(3, 3);
+        Connect4Board board = new TwoDArrayBoard(3, 3);
         assertThat(board.hasColumn(-1), is(false));
         assertThat(board.hasColumn(0), is(true));
         assertThat(board.hasColumn(2), is(true));
@@ -109,19 +109,19 @@ public class SingleArrayBoardTest {
 
     @Test(expected = InvalidPlayPosition.class)
     public void shouldCheckColumnLowerBound() {
-        SingleArrayBoard board = new SingleArrayBoard(3, 3);
+        Connect4Board board = new TwoDArrayBoard(3, 3);
         board.makePlay(Team.Red, -1);
     }
 
     @Test(expected = InvalidPlayPosition.class)
     public void shouldCheckColumnUpperBound() {
-        SingleArrayBoard board = new SingleArrayBoard(3, 3);
+        Connect4Board board = new TwoDArrayBoard(3, 3);
         board.makePlay(Team.Red, 3);
     }
 
     @Test
     public void shouldProvideRenderableBoardData() {
-        SingleArrayBoard board = new SingleArrayBoard(2, 2);
+        Connect4Board board = new TwoDArrayBoard(2, 2);
         board.makePlay(Team.Red, 0);
         board.makePlay(Team.Green, 1);
         List<List<Team>> state = board.getState();

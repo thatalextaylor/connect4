@@ -39,10 +39,6 @@ public class Game {
         return turn;
     }
 
-    public Set<PlayPosition> getWinningPositions() {
-        return board.getWinningPositions();
-    }
-
     public enum State {
         InProgress,
         Complete

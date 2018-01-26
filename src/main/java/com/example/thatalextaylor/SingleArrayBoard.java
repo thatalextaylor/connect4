@@ -1,13 +1,14 @@
 package com.example.thatalextaylor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class SingleArrayBoard implements Connect4Board {
     private final static int WIN_LENGTH = 4;
     private final int width;
     private final int height;
     private final Team[] state;
-    private Set<PlayPosition> winningPositions;
 
     public SingleArrayBoard(int width, int height) {
         if (width < 1 || height < 1) {
@@ -19,7 +20,6 @@ public final class SingleArrayBoard implements Connect4Board {
 
         this.state = new Team[width * height];
         Arrays.fill(state, Team.None);
-        winningPositions = new HashSet<>();
     }
 
     @Override
@@ -36,12 +36,11 @@ public final class SingleArrayBoard implements Connect4Board {
         int lowX = atPosition.getX() - WIN_LENGTH + 1;
         int lowY = atPosition.getY() - WIN_LENGTH + 1;
         int highY = atPosition.getX() + WIN_LENGTH - 1;
-        winningPositions = new HashSet<>();
-        winningPositions.addAll(checkWin(new PlayPosition(atPosition.getX(), lowY), Direction.Up));
-        winningPositions.addAll(checkWin(new PlayPosition(lowX, lowY), Direction.UpRight));
-        winningPositions.addAll(checkWin(new PlayPosition(lowX, atPosition.getY()), Direction.Right));
-        winningPositions.addAll(checkWin(new PlayPosition(lowX, highY), Direction.DownRight));
-        return winningPositions.size() > 0;
+        return
+                checkWin(new PlayPosition(atPosition.getX(), lowY), Direction.Up) != Team.None ||
+                checkWin(new PlayPosition(lowX, lowY), Direction.UpRight) != Team.None ||
+                checkWin(new PlayPosition(lowX, atPosition.getY()), Direction.Right) != Team.None ||
+                checkWin(new PlayPosition(lowX, highY), Direction.DownRight) != Team.None;
     }
 
     @Override
@@ -62,11 +61,6 @@ public final class SingleArrayBoard implements Connect4Board {
     @Override
     public int getWidth() {
         return width;
-    }
-
-    @Override
-    public Set<PlayPosition> getWinningPositions() {
-        return winningPositions;
     }
 
     private PlayPosition getFreePosition(int column) {
@@ -108,28 +102,24 @@ public final class SingleArrayBoard implements Connect4Board {
                 (position.getY() < height);
     }
 
-    private Set<PlayPosition> checkWin(PlayPosition position, Direction direction) {
+    private Team checkWin(PlayPosition position, Direction direction) {
         Team team = Team.None;
         int runLength = 0;
-        Set<PlayPosition> winningRun = new HashSet<>();
         for (int i = 0; i < WIN_LENGTH * 2 - 2; i++) {
             if (isInBounds(position)) {
                 Team candidateTeam = getMove(position);
                 if (candidateTeam == team) {
-                    winningRun.add(position);
                     runLength++;
-                    if (runLength == WIN_LENGTH && team != Team.None) {
-                        return winningRun;
+                    if (runLength == WIN_LENGTH) {
+                        return team;
                     }
                 } else {
                     team = candidateTeam;
-                    winningRun.clear();
-                    winningRun.add(position);
                     runLength = 1;
                 }
             }
             position = position.offset(direction);
         }
-        return new HashSet<>();
+        return Team.None;
     }
 }

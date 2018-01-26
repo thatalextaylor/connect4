@@ -2,9 +2,7 @@ package com.example.thatalextaylor;
 
 import org.junit.Test;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -56,7 +54,6 @@ public class GameTest {
     private class TestBoard implements Connect4Board {
         private int winAfterMoves;
         private int columnFullAfterMoves;
-        private PlayPosition lastPosition;
 
         TestBoard(int winAfterMoves, int columnFullAfterMoves) {
             this.winAfterMoves = winAfterMoves;
@@ -74,7 +71,6 @@ public class GameTest {
 
         @Override
         public boolean isWinningMove(PlayPosition atPosition) {
-            this.lastPosition = atPosition;
             return winAfterMoves == 0;
         }
 
@@ -91,13 +87,6 @@ public class GameTest {
         @Override
         public int getWidth() {
             return 5;
-        }
-
-        @Override
-        public Set<PlayPosition> getWinningPositions() {
-            Set<PlayPosition> winningPositions = new HashSet<>();
-            winningPositions.add(lastPosition);
-            return winningPositions;
         }
     }
 }
