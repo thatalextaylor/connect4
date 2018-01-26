@@ -3,6 +3,7 @@ package com.example.thatalextaylor;
 import java.util.ArrayList;
 import java.util.List;
 
+//A board backed by a 2D array
 public final class TwoDArrayBoard implements Connect4Board {
     private final static int WIN_LENGTH = 4;
     private final int width;
@@ -39,6 +40,17 @@ public final class TwoDArrayBoard implements Connect4Board {
         int lowX = atPosition.getX() - WIN_LENGTH + 1;
         int lowY = atPosition.getY() - WIN_LENGTH + 1;
         int highY = atPosition.getX() + WIN_LENGTH - 1;
+        //Checks 7 tiles in four directions for a possible win in a formation like
+        //
+        //    4  1  2
+        //     * * *
+        //      ***
+        //    3*****3
+        //      ***
+        //     * * *
+        //    2  1  4
+        //
+        // (1 -> 1, 2 -> 2, etc.
         return
                 checkWin(new PlayPosition(atPosition.getX(), lowY), Direction.Up) != Team.None ||
                 checkWin(new PlayPosition(lowX, lowY), Direction.UpRight) != Team.None ||
@@ -69,6 +81,7 @@ public final class TwoDArrayBoard implements Connect4Board {
         return width;
     }
 
+    //Find where a piece can drop to in the column
     private PlayPosition getFreePosition(int column) {
         for (int y = 0; y < height; y++) {
             PlayPosition candidate = new PlayPosition(column, y);
@@ -79,26 +92,33 @@ public final class TwoDArrayBoard implements Connect4Board {
         return PlayPosition.FULL_COLUMN;
     }
 
+    //Can a piece be placed in this position?
+    //Could be inlined, but it adds legibility
     private boolean isFreePosition(PlayPosition position) {
         return getMove(position) == Team.None;
     }
 
+    //Place a team's piece in a position
     private void setMove(Team team, PlayPosition position) {
         checkBounds(position);
         state[position.getX()][position.getY()] = team;
     }
 
+    //Which team's piece is in a position
     private Team getMove(PlayPosition position) {
         checkBounds(position);
         return state[position.getX()][position.getY()];
     }
 
+    //Make absolutely sure the position is on the board
+    //A user should never see this exception. It is here defensively
     private void checkBounds(PlayPosition position) {
         if (!isInBounds(position))
             throw new InvalidPlayPosition(String.format(
                     "PlayPosition(%d, %d) is outside the play area", position.getX(), position.getY()));
     }
 
+    //Check a position is on the board
     private boolean isInBounds(PlayPosition position) {
         return (position != PlayPosition.FULL_COLUMN) &&
                 (position != null) &&
@@ -108,6 +128,7 @@ public final class TwoDArrayBoard implements Connect4Board {
                 (position.getY() < height);
     }
 
+    //Check from a position for 7 steps in the direction for a run of 4 tiles the same
     private Team checkWin(PlayPosition position, Direction direction) {
         Team team = Team.None;
         int runLength = 0;

@@ -1,5 +1,6 @@
 package com.example.thatalextaylor;
 
+//Turns user input into game actions
 public class GameController {
     private Game game;
     private GamePresenter presenter;

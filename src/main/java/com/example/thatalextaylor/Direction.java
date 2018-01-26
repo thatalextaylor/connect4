@@ -1,5 +1,6 @@
 package com.example.thatalextaylor;
 
+//X/Y deltas for traversing a board
 public enum Direction {
     Up(0, 1),
     UpRight(1, 1),

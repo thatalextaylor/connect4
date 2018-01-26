@@ -1,5 +1,6 @@
 package com.example.thatalextaylor;
 
+//The players of the game
 public enum Team {
     None(-1, ' '),
     Red(1, 'R'),
@@ -21,6 +22,7 @@ public enum Team {
         return teamCharacter;
     }
 
+    //Which player has a turn after this player
     public Team getNextPlayer() {
         switch (this) {
             case Red:

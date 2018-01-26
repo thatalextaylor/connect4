@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import static java.util.Collections.reverse;
 
+//Presents the interface in ANSI-colored text on UNIX-like terminals
+//Activated with the '--ansi' command line option
 public class AnsiPresenter implements GamePresenter {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -62,7 +64,7 @@ public class AnsiPresenter implements GamePresenter {
 
     @Override
     public void showErrorText(String errorText) {
-        System.out.println(errorText);
+        System.out.println(String.format("%s%s%s", ANSI_PURPLE, errorText, ANSI_RESET));
     }
 
     private String colorFor(Team team) {

@@ -2,6 +2,7 @@ package com.example.thatalextaylor;
 
 import java.util.Set;
 
+//The rules of the connect 4 game
 public class Game {
     private Connect4Board board;
     private State state;
@@ -14,6 +15,7 @@ public class Game {
         this.turn = Team.Red;
     }
 
+    //Make a move for the current team in a column and see how that affects the game state
     public boolean makePlay(int column) {
         PlayPosition position = board.makePlay(turn, column);
         if (position == PlayPosition.FULL_COLUMN) {
@@ -35,6 +37,7 @@ public class Game {
         return board;
     }
 
+    //Which team's turn it is
     public Team getCurrentTurnsTeam() {
         return turn;
     }

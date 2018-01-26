@@ -1,5 +1,6 @@
 package com.example.thatalextaylor;
 
+//Board coordinates for a team to place a piece
 public class PlayPosition {
     public static final PlayPosition FULL_COLUMN = new PlayPosition(Integer.MIN_VALUE, Integer.MIN_VALUE);
     private int x;

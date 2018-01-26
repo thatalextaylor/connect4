@@ -1,6 +1,10 @@
 package com.example.thatalextaylor;
 
 public class Main {
+    //Accepts 3 command line arguments
+    // --ansi - use colored output on ANSI compatible terminals
+    // --big - play on a 15x12 board
+    // --tiny - play on a 5x5 board
     public static void main(String[] args) {
         boolean useAnsiPresenter = false;
         int width = 7;

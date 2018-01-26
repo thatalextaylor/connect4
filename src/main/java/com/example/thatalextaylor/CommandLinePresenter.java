@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import static java.util.Collections.reverse;
 
+//The default game presentation - text only
 public class CommandLinePresenter implements GamePresenter {
     private Scanner scanner;
 
